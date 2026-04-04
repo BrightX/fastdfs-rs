@@ -1,0 +1,26 @@
+[package]
+name = "fastdfs"
+version = "0.1.0-alpha.1"
+edition = "2021"
+repository = "https://github.com/BrightX/fastdfs-rs"
+description = "Rust client for FastDFS distributed file system"
+keywords = ["fastdfs", "distributed", "file-system", "storage", "client"]
+categories = ["filesystem", "asynchronous"]
+authors = [
+    "FastDFS Rust Client Contributors",
+    "BrightXu <BrightXu666@163.com>",
+]
+license = "MIT OR Apache-2.0"
+include = [
+    "src/*",
+    "LICENSE*",
+    "README.md",
+]
+
+[dependencies]
+bytes = "1.1.0"
+tokio = { version = "1", features = ["net", "io-util", "fs", "sync", "time", "rt"] }
+thiserror = "1.0"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["net", "io-util", "fs", "sync", "time", "rt", "macros"] }
