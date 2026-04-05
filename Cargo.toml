@@ -1,6 +1,6 @@
 [package]
 name = "fastdfs"
-version = "0.1.0-alpha.1"
+version = "0.1.0-alpha.2"
 edition = "2021"
 repository = "https://github.com/BrightX/fastdfs-rs"
 description = "Rust client for FastDFS distributed file system"
