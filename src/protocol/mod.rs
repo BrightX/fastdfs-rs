@@ -15,7 +15,7 @@ use std::time::Duration;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::time::timeout;
 
-use crate::utils::{pad_str_buf, secs_to_sys_time, unpad_string};
+use crate::utils::{pad_str_buf, secs_to_sys_time, trim_nul_end, unpad_string};
 pub(crate) use tracker_request::TrackerRequest;
 
 /// Protocol header size
@@ -277,8 +277,8 @@ pub fn decode_metadata(data: &[u8]) -> Result<Metadata> {
             continue;
         }
 
-        let key = String::from_utf8_lossy(fields[0]).to_string();
-        let value = String::from_utf8_lossy(fields[1]).to_string();
+        let key = String::from_utf8_lossy(trim_nul_end(fields[0])).to_string();
+        let value = String::from_utf8_lossy(trim_nul_end(fields[1])).to_string();
         metadata.insert(key, value);
     }
 
