@@ -239,7 +239,7 @@ impl StorageClient {
             return Ok(Bytes::new());
         }
 
-        let mut body = BytesMut::with_capacity(recv_header.length as usize);
+        let mut body = BytesMut::zeroed(recv_header.length as usize);
         self.stream.read_exact(&mut body).await?;
 
         Ok(body.freeze())
