@@ -10,6 +10,11 @@ use bytes::{Buf, Bytes};
 
 pub fn decode_storage_server(mut buf: &[u8]) -> crate::Result<StorageServer> {
     let body_len = buf.len();
+    if body_len < FDFS_GROUP_NAME_MAX_LEN + FDFS_IPV4_SIZE + 8 {
+        return Err(FastDFSError::InvalidResponse(format!(
+            "Storage server response too short, body_len: {body_len}"
+        )));
+    }
     let ip_port_len = body_len - (FDFS_GROUP_NAME_MAX_LEN + 1);
     let ip_size = ip_port_len - 8;
 
@@ -132,6 +137,9 @@ pub fn decode_group_stats(mut buf: &[u8], mut v: Version) -> crate::Result<Vec<G
     const FIELDS_TOTAL_SIZE_OLD: usize = FDFS_GROUP_NAME_MAX_LEN + 1 + 8 * 11;
     const FIELDS_TOTAL_SIZE: usize = FDFS_GROUP_NAME_MAX_LEN + 1 + 8 * 12;
     let body_len = buf.len();
+    if body_len == 0 {
+        return Ok(Vec::new());
+    }
     let record_len;
     if body_len % FIELDS_TOTAL_SIZE_OLD == 0 {
         record_len = FIELDS_TOTAL_SIZE_OLD;

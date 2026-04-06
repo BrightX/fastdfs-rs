@@ -72,7 +72,6 @@ impl TrackerClient {
                 return Err(err);
             }
         }
-        // todo 校验返回结果
         let mut body = vec![0; recv_header.length as usize];
         self.stream.read_exact(&mut body).await?;
 
@@ -93,7 +92,6 @@ impl TrackerClient {
                 return Err(err);
             }
         }
-        // todo 校验返回结果
         let mut body = vec![0; recv_header.length as usize];
         self.stream.read_exact(&mut body).await?;
 
@@ -108,7 +106,6 @@ impl TrackerClient {
                 return Err(err);
             }
         }
-        // todo 校验返回结果
         let mut body = vec![0; recv_header.length as usize];
         self.stream.read_exact(&mut body).await?;
 
@@ -151,7 +148,6 @@ impl TrackerClient {
                 return Err(err);
             }
         }
-        // todo 校验返回结果
         let mut body = vec![0; recv_header.length as usize];
         self.stream.read_exact(&mut body).await?;
 
@@ -193,7 +189,6 @@ impl TrackerClient {
                 return Err(err);
             }
         }
-        // todo 校验返回结果
 
         Ok(recv_header.is_ok())
     }
@@ -207,7 +202,11 @@ impl TrackerClient {
             .await?;
 
         let recv_header = ProtoHeader::read(&mut self.stream).await?;
-        // todo 校验返回结果
+        if !recv_header.is_ok() {
+            if let Some(err) = map_status_to_error(recv_header.status) {
+                return Err(err);
+            }
+        }
 
         Ok(recv_header.is_ok())
     }

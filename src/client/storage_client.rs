@@ -590,7 +590,11 @@ impl StorageClient {
             .await?;
 
         let recv_header = ProtoHeader::read(&mut self.stream).await?;
-        // todo 校验返回结果
+        if !recv_header.is_ok() {
+            if let Some(err) = map_status_to_error(recv_header.status) {
+                return Err(err);
+            }
+        }
 
         Ok(recv_header.is_ok())
     }
